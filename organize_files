@@ -1,0 +1,31 @@
+import os
+import shutil
+
+def organize_files(folder_path):
+    if not os.path.isdir(folder_path):
+        print("Invalid folder path.")
+        return
+
+    extensions = {
+        'Images': ['.jpg', '.jpeg', '.png', '.gif'],
+        'Documents': ['.pdf', '.docx', '.txt', '.xlsx'],
+        'Audio': ['.mp3', '.wav', '.aac'],
+        'Videos': ['.mp4', '.mkv', '.mov'],
+        'Code': ['.py', '.js', '.html', '.css', '.java']
+    }
+
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        if os.path.isfile(file_path):
+            _, ext = os.path.splitext(filename)
+            for folder, exts in extensions.items():
+                if ext.lower() in exts:
+                    target_folder = os.path.join(folder_path, folder)
+                    os.makedirs(target_folder, exist_ok=True)
+                    shutil.move(file_path, os.path.join(target_folder, filename))
+                    print(f"Moved {filename} to {folder}/")
+                    break
+
+# Example usage
+folder_to_organize = input("Enter the path of the folder to organize: ")
+organize_files(folder_to_organize)
