@@ -1,0 +1,50 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def load_dataset():
+    file_path = input("Enter the CSV file path: ")
+    try:
+        data = pd.read_csv(file_path)
+        print("\nDataset loaded successfully!\n")
+        print(data.head())
+        return data
+    except FileNotFoundError:
+        print("File not found. Please check the path.")
+        return None
+
+def visualize_data(data):
+    print("\nChoose a plot type:")
+    print("1. Scatter Plot")
+    print("2. Bar Plot")
+    print("3. Histogram")
+
+    choice = input("Enter your choice (1/2/3): ")
+
+    if choice == '1':
+        x = input("Enter X-axis column: ")
+        y = input("Enter Y-axis column: ")
+        sns.scatterplot(data=data, x=x, y=y)
+    elif choice == '2':
+        x = input("Enter column for categories (X-axis): ")
+        y = input("Enter column for values (Y-axis): ")
+        sns.barplot(data=data, x=x, y=y)
+    elif choice == '3':
+        col = input("Enter column name to plot histogram: ")
+        sns.histplot(data=data, x=col, kde=True)
+    else:
+        print("Invalid choice.")
+        return
+
+    plt.title("Data Visualization")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+def main():
+    data = load_dataset()
+    if data is not None:
+        visualize_data(data)
+
+if __name__ == "__main__":
+    main()
